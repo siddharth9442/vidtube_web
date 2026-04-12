@@ -1,9 +1,39 @@
 import { useState } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate, useSearchParams } from 'react-router-dom'
+import { useAuth } from '../store/store'
+import { loginUser } from '../api/auth'
 
 const Login = () => {
-  const [showPwd, setShowPwd] = useState(false)
-  const [error] = useState('')
+  const navigate = useNavigate()
+  const { login } = useAuth()
+  const [searchParams] = useSearchParams()
+
+  const [email,   setEmail]   = useState('')
+  const [password, setPassword] = useState('')
+  const [showPwd,  setShowPwd]  = useState(false)
+  const [loading,  setLoading]  = useState(false)
+  const [error,    setError]    = useState(
+    searchParams.get('error') === 'oauth_failed'
+      ? 'Google sign-in failed. Please try again.'
+      : ''
+  )
+
+  const handleSubmit = async (e) => {
+    e.preventDefault()
+    setError('')
+    setLoading(true)
+    try {
+      const res = await loginUser({ email, password });
+      console.log("res: ", res);
+
+      login(res.data.data)           // adjust .data.data to match your backend's response shape
+      navigate('/', { replace: true })
+    } catch (err) {
+      setError(err.response?.data?.message ?? 'Invalid email or password.')
+    } finally {
+      setLoading(false)
+    }
+  }
 
   return (
     <div className="min-h-screen flex">
@@ -77,7 +107,7 @@ const Login = () => {
               </div>
             )}
 
-            <form className="space-y-5">
+            <form className="space-y-5" onSubmit={handleSubmit}>
               {/* Email */}
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1.5">
@@ -92,6 +122,9 @@ const Login = () => {
                   <input
                     type="email"
                     placeholder="you@example.com"
+                    value={email}
+                    onChange={e => setEmail(e.target.value)}
+                    required
                     className="w-full pl-10 pr-4 py-3 bg-gray-50 border border-gray-200 rounded-xl text-sm text-gray-900 placeholder-gray-400 focus:outline-none focus:border-violet-400 focus:ring-2 focus:ring-violet-100 transition-all duration-200"
                   />
                 </div>
@@ -114,6 +147,9 @@ const Login = () => {
                   <input
                     type={showPwd ? 'text' : 'password'}
                     placeholder="Enter your password"
+                    value={password}
+                    onChange={e => setPassword(e.target.value)}
+                    required
                     className="w-full pl-10 pr-11 py-3 bg-gray-50 border border-gray-200 rounded-xl text-sm text-gray-900 placeholder-gray-400 focus:outline-none focus:border-violet-400 focus:ring-2 focus:ring-violet-100 transition-all duration-200"
                   />
                   <button
@@ -138,9 +174,10 @@ const Login = () => {
               {/* Submit */}
               <button
                 type="submit"
-                className="w-full py-3 bg-gradient-to-r from-violet-600 to-purple-600 text-white font-semibold rounded-xl shadow-md shadow-violet-200 hover:shadow-lg hover:shadow-violet-300 hover:scale-[1.01] active:scale-[0.99] transition-all duration-200"
+                disabled={loading}
+                className="w-full py-3 bg-gradient-to-r from-violet-600 to-purple-600 text-white font-semibold rounded-xl shadow-md shadow-violet-200 hover:shadow-lg hover:shadow-violet-300 hover:scale-[1.01] active:scale-[0.99] transition-all duration-200 disabled:opacity-60 disabled:cursor-not-allowed disabled:scale-100"
               >
-                Sign in
+                {loading ? 'Signing in…' : 'Sign in'}
               </button>
 
               {/* Divider */}
@@ -153,7 +190,7 @@ const Login = () => {
               {/* Google */}
               <button
                 type="button"
-                onClick={() => window.location.href = '/auth/google'}
+                onClick={() => window.location.href = `${import.meta.env.VITE_API_BASE_URL}/v1/users/auth/google`}
                 className="w-full flex items-center justify-center gap-3 py-3 bg-white border border-gray-200 rounded-xl text-sm font-medium text-gray-700 hover:bg-gray-50 hover:border-gray-300 shadow-sm transition-all duration-200"
               >
                 <svg viewBox="0 0 48 48" className="w-5 h-5 shrink-0">
