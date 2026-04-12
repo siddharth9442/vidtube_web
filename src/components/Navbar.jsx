@@ -2,11 +2,23 @@ import React, { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import Logo from './Logo'
 import { useAuth } from '../store/store'
+import { logoutUser } from '../api/auth'
 
 const Navbar = () => {
   const [query, setQuery] = useState('')
-  const { isAuthenticated, user, logout } = useAuth()
+  const { isAuthenticated, user, logout } = useAuth();
+  console.log("isAuthenticated: ", isAuthenticated, "user: ", user);
+  
   const navigate = useNavigate()
+
+  const handleLogout = async () => {
+    try {
+      await logoutUser()
+    } finally {
+      logout()
+      navigate('/login', { replace: true })
+    }
+  }
 
   const handleSearch = (e) => {
     e.preventDefault()
@@ -54,12 +66,20 @@ const Navbar = () => {
               to={`/channel/${user?._id}`}
               className="flex items-center gap-2 text-sm font-medium text-gray-700 hover:text-gray-900"
             >
-              <div className="w-8 h-8 rounded-full bg-gradient-to-br from-blue-500 to-purple-500 flex items-center justify-center text-white text-sm font-bold">
-                {user?.username?.[0]?.toUpperCase() || 'U'}
-              </div>
+              {user?.avatar ? (
+                <img
+                  src={user.avatar}
+                  alt={user.username}
+                  className="w-8 h-8 rounded-full object-cover"
+                />
+              ) : (
+                <div className="w-8 h-8 rounded-full bg-gradient-to-br from-blue-500 to-purple-500 flex items-center justify-center text-white text-sm font-bold">
+                  {user?.username?.[0]?.toUpperCase() || 'U'}
+                </div>
+              )}
             </Link>
             <button
-              onClick={logout}
+              onClick={handleLogout}
               className="text-sm text-gray-600 hover:text-gray-900 transition-colors px-3 py-1.5 hover:bg-gray-100 rounded-lg"
             >
               Sign out

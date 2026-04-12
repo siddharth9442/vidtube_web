@@ -5,6 +5,7 @@ import Layout from './components/Layout'
 import Home from './pages/Home'
 import Login from './pages/Login'
 import Register from './pages/Register'
+import OAuthCallback from './pages/OAuthCallback'
 import VideoPlayer from './pages/VideoPlayer'
 import Profile from './pages/Profile'
 import NotFound from './pages/NotFound'
@@ -17,6 +18,7 @@ const App = () => {
           {/* Auth pages — no Navbar/Sidebar */}
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
+          <Route path="/auth/callback" element={<OAuthCallback />} />
 
           {/* Main app pages — wrapped with Navbar + Sidebar */}
           <Route element={<Layout />}>
