@@ -7,7 +7,6 @@ import { logoutUser } from '../api/auth'
 const Navbar = () => {
   const [query, setQuery] = useState('')
   const { isAuthenticated, user, logout } = useAuth();
-  console.log("isAuthenticated: ", isAuthenticated, "user: ", user);
   
   const navigate = useNavigate()
 

@@ -25,7 +25,7 @@ const Login = () => {
     try {
       const res = await loginUser({ email, password });
 
-      login(res.data.data)           // adjust .data.data to match your backend's response shape
+      login(res.data.data.user);
       navigate('/', { replace: true })
     } catch (err) {
       setError(err.response?.data?.message ?? 'Invalid email or password.')

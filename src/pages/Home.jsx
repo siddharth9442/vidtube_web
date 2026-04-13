@@ -34,8 +34,6 @@ const Home = () => {
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(null)
 
-  console.log("videos: ", videos);
-
   useEffect(() => {
     const controller = new AbortController()
 
@@ -45,8 +43,7 @@ const Home = () => {
       try {
         const res = await getAllVideos(controller.signal);
         
-        const data = res.data?.data ?? [];
-        console.log("data: ", data);
+        const data = res.data?.data?.videos ?? [];
         setVideos(Array.isArray(data) ? data : []);
       } catch (err) {
         if (err.name !== 'CanceledError' && err.code !== 'ERR_CANCELED') {
