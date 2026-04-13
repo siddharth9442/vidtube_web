@@ -38,8 +38,8 @@ const VideoCard = ({ video }) => {
 
   return (
     <div className="group bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300 border border-gray-100/80">
+      {/* Thumbnail */}
       <Link to={`/video/${_id}`} className="block">
-        {/* Thumbnail */}
         <div className="relative aspect-video overflow-hidden">
           {thumbnail ? (
             <img
@@ -49,7 +49,6 @@ const VideoCard = ({ video }) => {
             />
           ) : (
             <div className={`w-full h-full bg-gradient-to-br ${gradient} flex items-center justify-center`}>
-              {/* Play icon — fades in on hover */}
               <div className="w-12 h-12 rounded-full bg-white/25 backdrop-blur-sm flex items-center justify-center opacity-80 group-hover:opacity-100 group-hover:scale-110 transition-all duration-300">
                 <svg className="w-6 h-6 text-white ml-0.5" fill="currentColor" viewBox="0 0 24 24">
                   <path d="M8 5v14l11-7z" />
@@ -57,37 +56,36 @@ const VideoCard = ({ video }) => {
               </div>
             </div>
           )}
-
-          {/* Duration badge */}
           {duration && (
             <span className="absolute bottom-2 right-2 bg-black/75 backdrop-blur-sm text-white text-xs px-2 py-0.5 rounded-md font-medium">
               {duration}
             </span>
           )}
         </div>
+      </Link>
 
-        {/* Info */}
-        <div className="flex gap-3 p-3">
-          <Link
-            to={`/channel/${owner?._id || '#'}`}
-            onClick={(e) => e.stopPropagation()}
-            className={`w-9 h-9 rounded-full bg-gradient-to-br ${gradient} shrink-0 flex items-center justify-center text-white text-sm font-bold hover:opacity-80 transition-opacity shadow-sm`}
-          >
-            {owner?.username?.[0]?.toUpperCase() || 'U'}
-          </Link>
+      {/* Info — outside the video Link to avoid nested <a> */}
+      <div className="flex gap-3 p-3">
+        <Link
+          to={`/channel/${owner?._id || '#'}`}
+          className={`w-9 h-9 rounded-full bg-gradient-to-br ${gradient} shrink-0 flex items-center justify-center text-white text-sm font-bold hover:opacity-80 transition-opacity shadow-sm`}
+        >
+          {owner?.username?.[0]?.toUpperCase( ) || 'U'}
+        </Link>
 
-          <div className="min-w-0">
+        <div className="min-w-0">
+          <Link to={`/video/${_id}`} className="block">
             <h3 className="font-semibold text-sm line-clamp-2 leading-snug text-gray-800 group-hover:text-violet-600 transition-colors duration-200">
               {title}
             </h3>
-            <p className="text-gray-400 text-xs mt-1 font-medium">{owner?.username || 'Unknown'}</p>
-            <p className="text-gray-400 text-xs">
-              {formatViews(views)} views
-              {createdAt ? ` · ${formatDate(createdAt)}` : ''}
-            </p>
-          </div>
+          </Link>
+          <p className="text-gray-400 text-xs mt-1 font-medium">{owner?.username || 'Unknown'}</p>
+          <p className="text-gray-400 text-xs">
+            {formatViews(views)} views
+            {createdAt ? ` · ${formatDate(createdAt)}` : ''}
+          </p>
         </div>
-      </Link>
+      </div>
     </div>
   )
 }

@@ -8,6 +8,10 @@ import Register from './pages/Register'
 import OAuthCallback from './pages/OAuthCallback'
 import VideoPlayer from './pages/VideoPlayer'
 import Profile from './pages/Profile'
+import Trending from './pages/Trending'
+import Subscriptions from './pages/Subscriptions'
+import Library from './pages/Library'
+import Upload from './pages/Upload'
 import NotFound from './pages/NotFound'
 
 const App = () => {
@@ -25,6 +29,10 @@ const App = () => {
             <Route path="/" element={<Home />} />
             <Route path="/video/:videoId" element={<VideoPlayer />} />
             <Route path="/channel/:channelId" element={<Profile />} />
+            <Route path="/trending" element={<Trending />} />
+            <Route path="/subscriptions" element={<Subscriptions />} />
+            <Route path="/library" element={<Library />} />
+            <Route path="/upload" element={<Upload />} />
           </Route>
 
           {/* 404 */}

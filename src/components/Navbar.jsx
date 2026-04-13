@@ -7,7 +7,6 @@ import { logoutUser } from '../api/auth'
 const Navbar = () => {
   const [query, setQuery] = useState('')
   const { isAuthenticated, user, logout } = useAuth();
-  console.log("isAuthenticated: ", isAuthenticated, "user: ", user);
   
   const navigate = useNavigate()
 
@@ -62,6 +61,15 @@ const Navbar = () => {
       <div className="flex items-center gap-3 ml-auto shrink-0">
         {isAuthenticated ? (
           <>
+            <Link
+              to="/upload"
+              className="flex items-center gap-1.5 px-4 py-1.5 border border-gray-300 text-gray-700 rounded-full text-sm font-medium hover:bg-gray-100 transition-colors"
+            >
+              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 10l4.553-2.069A1 1 0 0121 8.87v6.26a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z" />
+              </svg>
+              Upload
+            </Link>
             <Link
               to={`/channel/${user?._id}`}
               className="flex items-center gap-2 text-sm font-medium text-gray-700 hover:text-gray-900"

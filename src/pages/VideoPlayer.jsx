@@ -1,64 +1,7 @@
-import React, { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useParams, Link } from 'react-router-dom'
 import VideoCard from '../components/VideoCard'
-
-const MOCK_VIDEO = {
-  _id: '1',
-  title: 'Getting Started with React — A Complete Beginner\'s Guide',
-  description: `In this video we cover the absolute basics of React from scratch. You'll learn about components, props, state, and hooks. By the end you'll have a solid foundation to build modern web apps.
-
-Topics covered:
-• What is React and why use it
-• JSX syntax
-• Functional components
-• useState and useEffect hooks
-• Props and component communication
-• Conditional rendering`,
-  owner: { _id: 'u1', username: 'reactdev', subscribers: 12400 },
-  views: 45200,
-  likes: 3200,
-  duration: '12:34',
-  createdAt: new Date(Date.now() - 2 * 86_400_000).toISOString(),
-}
-
-const RELATED_VIDEOS = [
-  {
-    _id: '2',
-    title: 'Tailwind CSS Crash Course 2024',
-    thumbnail: null,
-    owner: { _id: 'u2', username: 'cssmaster' },
-    views: 128000,
-    duration: '28:12',
-    createdAt: new Date(Date.now() - 5 * 86_400_000).toISOString(),
-  },
-  {
-    _id: '3',
-    title: 'Node.js REST API Tutorial',
-    thumbnail: null,
-    owner: { _id: 'u3', username: 'backendpro' },
-    views: 73400,
-    duration: '45:00',
-    createdAt: new Date(Date.now() - 10 * 86_400_000).toISOString(),
-  },
-  {
-    _id: '4',
-    title: 'JavaScript ES2024 Features',
-    thumbnail: null,
-    owner: { _id: 'u4', username: 'jsweekly' },
-    views: 19500,
-    duration: '8:47',
-    createdAt: new Date(Date.now() - 1 * 86_400_000).toISOString(),
-  },
-  {
-    _id: '5',
-    title: 'Building a Full-Stack App with React + Node',
-    thumbnail: null,
-    owner: { _id: 'u1', username: 'reactdev' },
-    views: 210000,
-    duration: '58:22',
-    createdAt: new Date(Date.now() - 30 * 86_400_000).toISOString(),
-  },
-]
+import { getVideoById, getAllVideos } from '../api/videos'
 
 const formatViews = (n) => {
   if (n >= 1_000_000) return `${(n / 1_000_000).toFixed(1)}M`
@@ -68,26 +11,107 @@ const formatViews = (n) => {
 
 const VideoPlayer = () => {
   const { videoId } = useParams()
+  const [video, setVideo] = useState(null)
+  const [relatedVideos, setRelatedVideos] = useState([])
+  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState(null)
   const [liked, setLiked] = useState(false)
   const [subscribed, setSubscribed] = useState(false)
   const [descExpanded, setDescExpanded] = useState(false)
 
-  // In a real app you'd fetch the video by videoId from the API
-  const video = MOCK_VIDEO
+  useEffect(() => {
+    const controller = new AbortController()
+
+    const fetchData = async () => {
+      setLoading(true)
+      setError(null)
+      try {
+        const [videoRes, allRes] = await Promise.all([
+          getVideoById(videoId, controller.signal),
+          getAllVideos(controller.signal),
+        ])
+
+        setVideo(videoRes.data?.data ?? null)
+
+        const docs = allRes.data?.data?.docs ?? []
+        setRelatedVideos(docs.filter((v) => v._id !== videoId))
+      } catch (err) {
+        if (err.name !== 'CanceledError' && err.code !== 'ERR_CANCELED') {
+          setError(err.response?.data?.message || 'Failed to load video.')
+        }
+      } finally {
+        setLoading(false)
+      }
+    }
+
+    fetchData()
+    return () => controller.abort()
+  }, [videoId])
+
+  if (loading) {
+    return (
+      <div className="flex gap-6 max-w-[1400px] animate-pulse">
+        <div className="flex-1 min-w-0">
+          <div className="aspect-video bg-gray-200 rounded-xl" />
+          <div className="h-6 bg-gray-200 rounded mt-4 w-3/4" />
+          <div className="flex gap-3 mt-4">
+            <div className="w-10 h-10 rounded-full bg-gray-200 shrink-0" />
+            <div className="flex-1 space-y-2 pt-1">
+              <div className="h-4 bg-gray-200 rounded w-1/3" />
+              <div className="h-3 bg-gray-200 rounded w-1/4" />
+            </div>
+          </div>
+          <div className="mt-4 bg-gray-100 rounded-xl p-4 space-y-2">
+            <div className="h-3 bg-gray-200 rounded w-1/4" />
+            <div className="h-3 bg-gray-200 rounded w-full" />
+            <div className="h-3 bg-gray-200 rounded w-5/6" />
+          </div>
+        </div>
+        <div className="w-96 shrink-0 hidden lg:flex flex-col gap-4">
+          {Array.from({ length: 4 }).map((_, i) => (
+            <div key={i} className="bg-gray-200 rounded-2xl h-24" />
+          ))}
+        </div>
+      </div>
+    )
+  }
+
+  if (error || !video) {
+    return (
+      <div className="flex flex-col items-center justify-center py-20 text-center">
+        <div className="w-16 h-16 rounded-full bg-red-50 flex items-center justify-center mb-4">
+          <svg className="w-8 h-8 text-red-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+          </svg>
+        </div>
+        <p className="text-gray-700 font-medium text-sm">{error || 'Video not found.'}</p>
+        <Link
+          to="/"
+          className="mt-4 px-5 py-2 rounded-full border border-gray-200 text-sm text-gray-600 hover:bg-gray-50 transition-colors"
+        >
+          Go home
+        </Link>
+      </div>
+    )
+  }
+
+  // owner may be a populated object or just an ID string
+  const owner = video.owner && typeof video.owner === 'object'
+    ? video.owner
+    : { _id: video.owner, username: 'Unknown' }
 
   return (
     <div className="flex gap-6 max-w-[1400px]">
       {/* Main content */}
       <div className="flex-1 min-w-0">
         {/* Video Player */}
-        <div className="aspect-video bg-black rounded-xl overflow-hidden flex items-center justify-center">
-          <div className="text-center text-gray-400">
-            <svg className="w-16 h-16 mx-auto mb-3 opacity-30" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z" />
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-            </svg>
-            <p className="text-sm">Video player — connect your backend to stream video</p>
-          </div>
+        <div className="aspect-video bg-black rounded-xl overflow-hidden">
+          <video
+            src={video.videoFile}
+            poster={video.thumbnail}
+            controls
+            className="w-full h-full"
+          />
         </div>
 
         {/* Title */}
@@ -97,21 +121,23 @@ const VideoPlayer = () => {
         <div className="flex items-center justify-between mt-4 flex-wrap gap-4">
           <div className="flex items-center gap-3">
             <Link
-              to={`/channel/${video.owner._id}`}
+              to={`/channel/${owner._id}`}
               className="w-10 h-10 rounded-full bg-gradient-to-br from-blue-400 to-purple-500 flex items-center justify-center text-white font-bold text-sm hover:opacity-80 transition-opacity"
             >
-              {video.owner.username[0].toUpperCase()}
+              {owner.username[0].toUpperCase()}
             </Link>
             <div>
               <Link
-                to={`/channel/${video.owner._id}`}
+                to={`/channel/${owner._id}`}
                 className="font-semibold text-gray-900 hover:text-blue-600 transition-colors"
               >
-                {video.owner.username}
+                {owner.username}
               </Link>
-              <p className="text-sm text-gray-500">
-                {formatViews(video.owner.subscribers)} subscribers
-              </p>
+              {owner.subscribers != null && (
+                <p className="text-sm text-gray-500">
+                  {formatViews(owner.subscribers)} subscribers
+                </p>
+              )}
             </div>
             <button
               onClick={() => setSubscribed((s) => !s)}
@@ -135,7 +161,7 @@ const VideoPlayer = () => {
               <svg className="w-4 h-4" fill={liked ? 'currentColor' : 'none'} stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 10h4.764a2 2 0 011.789 2.894l-3.5 7A2 2 0 0115.263 21h-4.017c-.163 0-.326-.02-.485-.06L7 20m7-10V5a2 2 0 00-2-2h-.095c-.5 0-.905.405-.905.905 0 .714-.211 1.412-.608 2.006L7 11v9m7-10h-2M7 20H5a2 2 0 01-2-2v-6a2 2 0 012-2h2.5" />
               </svg>
-              {formatViews(video.likes + (liked ? 1 : 0))}
+              {formatViews((video.likes ?? 0) + (liked ? 1 : 0))}
             </button>
             <button className="flex items-center gap-2 px-4 py-2 rounded-full text-sm font-medium bg-gray-100 text-gray-700 hover:bg-gray-200 transition-colors">
               <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -152,29 +178,31 @@ const VideoPlayer = () => {
             {formatViews(video.views)} views &nbsp;·&nbsp;{' '}
             {new Date(video.createdAt).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}
           </p>
-          <p
-            className={`mt-2 text-gray-700 whitespace-pre-line ${descExpanded ? '' : 'line-clamp-3'}`}
-          >
+          <p className={`mt-2 text-gray-700 whitespace-pre-line ${descExpanded ? '' : 'line-clamp-3'}`}>
             {video.description}
           </p>
-          <button
-            onClick={() => setDescExpanded((e) => !e)}
-            className="mt-2 text-xs font-semibold text-gray-900 hover:text-blue-600 transition-colors"
-          >
-            {descExpanded ? 'Show less' : 'Show more'}
-          </button>
+          {video.description?.length > 150 && (
+            <button
+              onClick={() => setDescExpanded((e) => !e)}
+              className="mt-2 text-xs font-semibold text-gray-900 hover:text-blue-600 transition-colors"
+            >
+              {descExpanded ? 'Show less' : 'Show more'}
+            </button>
+          )}
         </div>
       </div>
 
       {/* Sidebar — Related Videos */}
-      <div className="w-96 shrink-0 hidden lg:block">
-        <h2 className="font-semibold text-gray-900 mb-4">Related Videos</h2>
-        <div className="flex flex-col gap-4">
-          {RELATED_VIDEOS.map((v) => (
-            <VideoCard key={v._id} video={v} />
-          ))}
+      {relatedVideos.length > 0 && (
+        <div className="w-96 shrink-0 hidden lg:block">
+          <h2 className="font-semibold text-gray-900 mb-4">Related Videos</h2>
+          <div className="flex flex-col gap-4">
+            {relatedVideos.map((v) => (
+              <VideoCard key={v._id} video={v} />
+            ))}
+          </div>
         </div>
-      </div>
+      )}
     </div>
   )
 }
