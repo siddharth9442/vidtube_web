@@ -1,5 +1,6 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import VideoCard from '../components/VideoCard'
+import { getAllVideos } from '../api/videos'
 
 const CATEGORIES = [
   { label: 'All' },
@@ -13,83 +14,52 @@ const CATEGORIES = [
   { label: 'Music', emoji: '🎵' },
 ]
 
-const MOCK_VIDEOS = [
-  {
-    _id: '1',
-    title: `Getting Started with React — A Complete Beginner's Guide`,
-    thumbnail: null,
-    owner: { _id: 'u1', username: 'reactdev' },
-    views: 45200,
-    duration: '12:34',
-    createdAt: new Date(Date.now() - 2 * 86_400_000).toISOString(),
-  },
-  {
-    _id: '2',
-    title: 'Tailwind CSS Crash Course 2024 — Build Anything Fast',
-    thumbnail: null,
-    owner: { _id: 'u2', username: 'cssmaster' },
-    views: 128000,
-    duration: '28:12',
-    createdAt: new Date(Date.now() - 5 * 86_400_000).toISOString(),
-  },
-  {
-    _id: '3',
-    title: 'Node.js REST API Tutorial — Build a Full Backend',
-    thumbnail: null,
-    owner: { _id: 'u3', username: 'backendpro' },
-    views: 73400,
-    duration: '45:00',
-    createdAt: new Date(Date.now() - 10 * 86_400_000).toISOString(),
-  },
-  {
-    _id: '4',
-    title: 'JavaScript ES2024 Features You Need to Know',
-    thumbnail: null,
-    owner: { _id: 'u4', username: 'jsweekly' },
-    views: 19500,
-    duration: '8:47',
-    createdAt: new Date(Date.now() - 1 * 86_400_000).toISOString(),
-  },
-  {
-    _id: '5',
-    title: 'Building a Full-Stack App with React + Node in 1 Hour',
-    thumbnail: null,
-    owner: { _id: 'u1', username: 'reactdev' },
-    views: 210000,
-    duration: '58:22',
-    createdAt: new Date(Date.now() - 30 * 86_400_000).toISOString(),
-  },
-  {
-    _id: '6',
-    title: 'UI Design Fundamentals Every Developer Should Know',
-    thumbnail: null,
-    owner: { _id: 'u5', username: 'designcodes' },
-    views: 34800,
-    duration: '19:05',
-    createdAt: new Date(Date.now() - 7 * 86_400_000).toISOString(),
-  },
-  {
-    _id: '7',
-    title: 'MongoDB Aggregation Pipelines — Deep Dive',
-    thumbnail: null,
-    owner: { _id: 'u3', username: 'backendpro' },
-    views: 8900,
-    duration: '33:41',
-    createdAt: new Date(Date.now() - 14 * 86_400_000).toISOString(),
-  },
-  {
-    _id: '8',
-    title: 'React State Management in 2024 — Context vs Zustand vs Redux',
-    thumbnail: null,
-    owner: { _id: 'u6', username: 'statewizard' },
-    views: 62100,
-    duration: '24:17',
-    createdAt: new Date(Date.now() - 21 * 86_400_000).toISOString(),
-  },
-]
+const VideoCardSkeleton = () => (
+  <div className="bg-white rounded-2xl overflow-hidden border border-gray-100/80 animate-pulse">
+    <div className="aspect-video bg-gray-100" />
+    <div className="flex gap-3 p-3">
+      <div className="w-9 h-9 rounded-full bg-gray-100 shrink-0" />
+      <div className="flex-1 space-y-2 py-0.5">
+        <div className="h-3 bg-gray-100 rounded w-full" />
+        <div className="h-3 bg-gray-100 rounded w-3/4" />
+        <div className="h-2.5 bg-gray-100 rounded w-1/2 mt-1" />
+      </div>
+    </div>
+  </div>
+)
 
 const Home = () => {
   const [activeCategory, setActiveCategory] = useState('All')
+  const [videos, setVideos] = useState([])
+  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState(null)
+
+  console.log("videos: ", videos);
+
+  useEffect(() => {
+    const controller = new AbortController()
+
+    const fetchVideos = async () => {
+      setLoading(true)
+      setError(null)
+      try {
+        const res = await getAllVideos(controller.signal);
+        
+        const data = res.data?.data ?? [];
+        console.log("data: ", data);
+        setVideos(Array.isArray(data) ? data : []);
+      } catch (err) {
+        if (err.name !== 'CanceledError' && err.code !== 'ERR_CANCELED') {
+          setError(err.response?.data?.message || 'Failed to load videos.');
+        }
+      } finally {
+        setLoading(false);
+      }
+    }
+
+    fetchVideos()
+    return () => controller.abort()
+  }, [])
 
   return (
     <div>
@@ -148,12 +118,46 @@ const Home = () => {
         <h2 className="text-base font-semibold text-gray-600">Recommended for you</h2>
       </div>
 
+      {/* Error state */}
+      {error && !loading && (
+        <div className="flex flex-col items-center justify-center py-16 text-center">
+          <div className="w-16 h-16 rounded-full bg-red-50 flex items-center justify-center mb-4">
+            <svg className="w-8 h-8 text-red-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+          </div>
+          <p className="text-gray-700 font-medium text-sm">{error}</p>
+          <button
+            onClick={() => window.location.reload()}
+            className="mt-4 px-5 py-2 rounded-full border border-gray-200 text-sm text-gray-600 hover:bg-gray-50 transition-colors"
+          >
+            Try again
+          </button>
+        </div>
+      )}
+
       {/* Video Grid */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5">
-        {MOCK_VIDEOS.map((video) => (
-          <VideoCard key={video._id} video={video} />
-        ))}
+        {loading
+          ? Array.from({ length: 8 }).map((_, i) => <VideoCardSkeleton key={i} />)
+          : videos.map((video) => (
+              <VideoCard key={video._id} video={video} />
+            ))
+        }
       </div>
+
+      {/* Empty state */}
+      {!loading && !error && videos.length === 0 && (
+        <div className="flex flex-col items-center justify-center py-20 text-center">
+          <div className="w-20 h-20 rounded-full bg-gradient-to-br from-violet-100 to-purple-200 flex items-center justify-center mb-6 shadow-md">
+            <svg className="w-10 h-10 text-violet-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M15 10l4.553-2.069A1 1 0 0121 8.87v6.26a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z" />
+            </svg>
+          </div>
+          <h2 className="text-lg font-bold text-gray-800 mb-1">No videos yet</h2>
+          <p className="text-gray-400 text-sm">Be the first to upload a video!</p>
+        </div>
+      )}
     </div>
   )
 }
