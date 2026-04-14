@@ -28,7 +28,7 @@ const VideoPlayer = () => {
       try {
         const [videoRes, allRes] = await Promise.all([
           getVideoById(videoId, controller.signal),
-          getAllVideos(controller.signal),
+          getAllVideos({}, controller.signal),
         ])
 
         setVideo(videoRes.data?.data ?? null)

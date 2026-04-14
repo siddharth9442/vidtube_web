@@ -51,8 +51,8 @@ const Sidebar = () => {
           className={({ isActive }) =>
             `flex items-center gap-4 px-4 py-2.5 mx-2 rounded-xl text-sm font-medium transition-colors ${
               isActive
-                ? 'bg-gray-100 text-gray-900 font-semibold'
-                : 'text-gray-600 hover:bg-gray-100 hover:text-gray-900'
+                ? 'bg-gray-100 dark:bg-gray-800 text-gray-900 dark:text-white font-semibold'
+                : 'text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800 hover:text-gray-900 dark:hover:text-white'
             }`
           }
         >
@@ -61,9 +61,9 @@ const Sidebar = () => {
         </NavLink>
       ))}
 
-      <div className="mx-4 my-3 border-t border-gray-200" />
+      <div className="mx-4 my-3 border-t border-gray-200 dark:border-gray-700" />
 
-      <p className="px-6 py-2 text-xs font-semibold text-gray-400 uppercase tracking-wider">
+      <p className="px-6 py-2 text-xs font-semibold text-gray-400 dark:text-gray-500 uppercase tracking-wider">
         Explore
       </p>
 
@@ -76,7 +76,7 @@ const Sidebar = () => {
       ].map((cat) => (
         <button
           key={cat.label}
-          className="flex items-center gap-4 w-full px-4 py-2.5 mx-2 rounded-xl text-sm text-gray-600 hover:bg-gray-100 hover:text-gray-900 transition-colors"
+          className="flex items-center gap-4 w-full px-4 py-2.5 mx-2 rounded-xl text-sm text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800 hover:text-gray-900 dark:hover:text-white transition-colors"
           style={{ width: 'calc(100% - 16px)' }}
         >
           <span className="text-base">{cat.emoji}</span>

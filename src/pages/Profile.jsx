@@ -1,6 +1,8 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
-import VideoCard from '../components/VideoCard'
+import VideoCard from '../components/VideoCard';
+import { getChannel } from '../api/channel';
+import { getAllVideos } from '../api/videos';
 
 const MOCK_CHANNEL = {
   _id: 'u1',
@@ -60,12 +62,66 @@ const formatSubs = (n) => {
 const TABS = ['Videos', 'About']
 
 const Profile = () => {
-  const { channelId } = useParams()
+  const { channelId } = useParams(); // get channelId from params
+  const [videos, setVideos] = useState([]);
+  const [loading, setLoading] = useState(false);
+
   const [activeTab, setActiveTab] = useState('Videos')
   const [subscribed, setSubscribed] = useState(false)
+  const [channel, setChannel] = useState({});
+  const [error, setError] = useState(null);
 
-  // In a real app you'd fetch the channel by channelId
-  const channel = MOCK_CHANNEL
+  console.log("inside profile", channelId);
+  useEffect(() => {
+    const controller = new AbortController();
+
+    const fetchVideos = async () => {
+      setError(null);
+      try {
+        setLoading(true);
+        let payload = { skip: 0, limit: 10, userId: channelId }
+        const res = await getAllVideos(payload, controller.signal);
+
+        const videos = res.data?.data?.videos ?? [];
+        setVideos(Array.isArray(videos) ? videos : []);
+      } catch (error) {
+        if (error.name !== 'CanceledError' && error.code !== 'ERR_CANCELED') {
+          setError(error.response?.data?.message || 'Failed to load videos.');
+        }
+      } finally {
+        setLoading(false);
+      }
+    }
+
+    fetchVideos();
+    return () => controller.abort();
+  }, [channelId]);
+
+  useEffect(() => {
+    const controller = new AbortController();
+    setLoading(true);
+    setError(null);
+    const getChannelDetails = async () => {
+      try {
+        const res = await getChannel(channelId, controller.signal);
+
+        const data = res?.data?.data;
+        setChannel(data ? data : {});
+      } catch (error) {
+        if (error.name !== 'CanceledError' && error.code !== 'ERR_CANCELED') {
+          setError(error.response?.data?.message || 'Failed to load videos.');
+        }
+      } finally {
+        setLoading(false);
+      }
+    }
+
+    getChannelDetails();
+    return () =>  controller.abort()
+  }, [])
+
+  console.log("videos: ", videos);
+  console.log("channel: ", channel);
 
   return (
     <div className="max-w-5xl">
@@ -74,13 +130,22 @@ const Profile = () => {
 
       {/* Channel Header */}
       <div className="flex items-end gap-5 mt-4 flex-wrap">
-        <div className="w-24 h-24 rounded-full bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center text-white text-4xl font-bold border-4 border-white -mt-12 shrink-0">
-          {channel.username[0].toUpperCase()}
+        <div className="w-24 h-24 rounded-full flex items-center justify-center text-white text-4xl font-bold border-4 border-white -mt-12 shrink-0">
+          {channel?.avatar ? (
+            <img
+              src={channel.avatar}
+              className="w-full h-full rounded-full object-cover"
+            />
+          ) : (
+            <div className="w-full h-full rounded-full bg-gradient-to-br from-blue-500 to-purple-500 flex items-center justify-center text-white text-500 font-bold">
+              {channel?.username?.[0]?.toUpperCase() || 'U'}
+            </div>
+          )}
         </div>
         <div className="flex-1 min-w-0 pb-1">
           <h1 className="text-2xl font-bold text-gray-900">{channel.fullName}</h1>
           <p className="text-sm text-gray-500 mt-0.5">
-            @{channel.username} &nbsp;·&nbsp; {formatSubs(channel.subscribers)} subscribers &nbsp;·&nbsp; {channel.totalVideos} videos
+            @{channel.username} &nbsp;·&nbsp; {formatSubs(channel.subscribersCount)} subscribers &nbsp;·&nbsp; {channel.totalVideos} videos
           </p>
         </div>
         <button
@@ -116,7 +181,7 @@ const Profile = () => {
       <div className="mt-6">
         {activeTab === 'Videos' && (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
-            {MOCK_VIDEOS.map((video) => (
+            {videos.map((video) => (
               <VideoCard key={video._id} video={video} />
             ))}
           </div>
@@ -130,8 +195,8 @@ const Profile = () => {
             </div>
             <div>
               <h3 className="font-semibold text-gray-900 mb-1">Stats</h3>
-              <p className="text-gray-600 text-sm">Joined {new Date(channel.joinedAt).toLocaleDateString('en-US', { year: 'numeric', month: 'long' })}</p>
-              <p className="text-gray-600 text-sm">{formatSubs(channel.subscribers)} subscribers</p>
+              <p className="text-gray-600 text-sm">Joined {new Date(channel.createdAt).toLocaleDateString('en-US', { year: 'numeric', month: 'long' })}</p>
+              <p className="text-gray-600 text-sm">{formatSubs(channel.subscribersCount)} subscribers</p>
               <p className="text-gray-600 text-sm">{channel.totalVideos} videos</p>
             </div>
           </div>
