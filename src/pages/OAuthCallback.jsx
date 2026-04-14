@@ -8,8 +8,6 @@ import { useAuth } from '../store/store'
 const OAuthCallback = () => {
   const navigate = useNavigate()
   const { user, isLoading } = useAuth()
-  console.log("user: ", user);
-  console.log("isLoading: ", isLoading);
   
   useEffect(() => {
     if (isLoading) return
