@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import VideoCard from '../components/VideoCard'
 import { getAllVideos } from '../api/videos'
+import { useAuth } from '../store/store'
 
 const CATEGORIES = [
   { label: 'All' },
@@ -29,20 +30,21 @@ const VideoCardSkeleton = () => (
 )
 
 const Home = () => {
-  const [activeCategory, setActiveCategory] = useState('All')
-  const [videos, setVideos] = useState([])
-  const [loading, setLoading] = useState(true)
-  const [error, setError] = useState(null)
+  const { isAuthenticated, isLoading: authLoading } = useAuth()
+  const [activeCategory, setActiveCategory] = useState('All');
+  const [videos, setVideos] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
-    const controller = new AbortController()
+    if (authLoading || !isAuthenticated) return
 
+    const controller = new AbortController()
     const fetchVideos = async () => {
-      setLoading(true)
-      setError(null)
+      setLoading(true);
+      setError(null);
       try {
         const res = await getAllVideos(controller.signal);
-        
         const data = res.data?.data?.videos ?? [];
         setVideos(Array.isArray(data) ? data : []);
       } catch (err) {
@@ -56,7 +58,7 @@ const Home = () => {
 
     fetchVideos()
     return () => controller.abort()
-  }, [])
+  }, [isAuthenticated, authLoading])
 
   return (
     <div>

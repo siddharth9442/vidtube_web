@@ -1,7 +1,7 @@
 import { createContext, useContext, useReducer, useEffect, useState, createElement } from 'react'
 import { getCurrentUser } from '../api/auth'
 
-// ─── Theme ───────────────────────────────────────────────────────────────────
+// Theme Context
 const ThemeContext = createContext(null)
 
 export function ThemeProvider({ children }) {
@@ -56,16 +56,32 @@ function authReducer(state, action) {
 export function AuthProvider({ children }) {
   const [state, dispatch] = useReducer(authReducer, initialState)
 
-  // Restore session on every page load — if the HTTP-only cookie is still valid
-  // the backend returns the current user; otherwise we just mark loading as done.
+  // Restore session on page load only when a prior login is recorded in localStorage.
+  // If the HTTP-only cookie is still valid the backend returns the current user;
+  // otherwise we clear the flag and mark loading as done.
   useEffect(() => {
+    if (localStorage.getItem('isLoggedIn') !== 'true') {
+      dispatch({ type: 'INIT_DONE' })
+      return
+    }
+
     getCurrentUser()
       .then(res => dispatch({ type: 'LOGIN', payload: res.data.data }))
-      .catch(() => dispatch({ type: 'INIT_DONE' }))
+      .catch(() => {
+        localStorage.removeItem('isLoggedIn')
+        dispatch({ type: 'INIT_DONE' })
+      })
   }, [])
 
-  const login  = (userData) => dispatch({ type: 'LOGIN',  payload: userData });
-  const logout = () => dispatch({ type: 'LOGOUT' })
+  const login = (userData) => {
+    localStorage.setItem('isLoggedIn', 'true')
+    dispatch({ type: 'LOGIN', payload: userData })
+  }
+
+  const logout = () => {
+    localStorage.removeItem('isLoggedIn')
+    dispatch({ type: 'LOGOUT' })
+  }
 
   return createElement(AuthContext.Provider, { value: { ...state, login, logout } }, children)
 }
