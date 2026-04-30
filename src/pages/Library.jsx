@@ -81,7 +81,7 @@ const SectionHeading = ({ color, title, linkTo, linkLabel }) => (
   <div className="flex items-center justify-between mb-5">
     <div className="flex items-center gap-3">
       <div className={`w-1 h-5 rounded-full bg-gradient-to-b ${color}`} />
-      <h2 className="text-base font-semibold text-gray-600">{title}</h2>
+      <h2 className="text-base font-semibold text-gray-600 dark:text-gray-400">{title}</h2>
     </div>
     {linkTo && (
       <Link to={linkTo} className="text-xs text-violet-500 font-medium hover:text-violet-700 transition-colors">
@@ -102,7 +102,7 @@ const Library = () => {
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
           </svg>
         </div>
-        <h2 className="text-xl font-bold text-gray-800 mb-2">Sign in to view your library</h2>
+        <h2 className="text-xl font-bold text-gray-800 dark:text-gray-100 mb-2">Sign in to view your library</h2>
         <p className="text-gray-500 text-sm mb-6 max-w-xs">
           Your watch history, liked videos, and playlists will appear here.
         </p>
@@ -119,13 +119,13 @@ const Library = () => {
   return (
     <div>
       {/* Hero Banner */}
-      <div className="relative rounded-2xl overflow-hidden mb-8 p-7 bg-gradient-to-r from-violet-100 via-purple-50 to-indigo-100 border border-purple-100/80">
+      <div className="relative rounded-2xl overflow-hidden mb-8 p-7 bg-gradient-to-r from-violet-100 via-purple-50 to-indigo-100 dark:from-violet-900/40 dark:via-purple-900/30 dark:to-indigo-900/40 border border-purple-100/80 dark:border-purple-800/40">
         <div className="absolute -top-8 -right-8 w-52 h-52 rounded-full bg-violet-200/50 blur-3xl pointer-events-none" />
         <div className="absolute -bottom-6 left-6 w-36 h-36 rounded-full bg-indigo-200/40 blur-2xl pointer-events-none" />
 
         <div className="relative flex items-center justify-between flex-wrap gap-4">
           <div>
-            <h1 className="text-2xl font-bold text-gray-800 flex items-center gap-2">
+            <h1 className="text-2xl font-bold text-gray-800 dark:text-gray-100 flex items-center gap-2">
               Your Library
               <span className="text-2xl">📚</span>
             </h1>
@@ -160,7 +160,7 @@ const Library = () => {
         {MOCK_PLAYLISTS.map((playlist) => (
           <div
             key={playlist._id}
-            className="flex items-center gap-4 p-4 bg-white rounded-2xl border border-gray-100 shadow-sm hover:shadow-md hover:-translate-y-0.5 transition-all duration-200 cursor-pointer"
+            className="flex items-center gap-4 p-4 bg-white dark:bg-gray-800 rounded-2xl border border-gray-100 dark:border-gray-700 shadow-sm hover:shadow-md hover:-translate-y-0.5 transition-all duration-200 cursor-pointer"
           >
             <div className={`w-14 h-14 rounded-xl bg-gradient-to-br ${playlist.color} flex items-center justify-center shrink-0 shadow-sm`}>
               <svg className="w-7 h-7 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -168,7 +168,7 @@ const Library = () => {
               </svg>
             </div>
             <div className="min-w-0">
-              <p className="font-semibold text-sm text-gray-800 truncate">{playlist.name}</p>
+              <p className="font-semibold text-sm text-gray-800 dark:text-gray-100 truncate">{playlist.name}</p>
               <p className="text-xs text-gray-400 mt-0.5">{playlist.count} videos</p>
             </div>
             <svg className="w-4 h-4 text-gray-300 ml-auto shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -178,8 +178,8 @@ const Library = () => {
         ))}
 
         {/* Create new playlist */}
-        <button className="flex items-center gap-4 p-4 bg-white rounded-2xl border-2 border-dashed border-gray-200 hover:border-violet-300 hover:bg-violet-50 transition-all duration-200 group">
-          <div className="w-14 h-14 rounded-xl bg-gray-100 group-hover:bg-violet-100 flex items-center justify-center shrink-0 transition-colors">
+        <button className="flex items-center gap-4 p-4 bg-white dark:bg-gray-800 rounded-2xl border-2 border-dashed border-gray-200 dark:border-gray-600 hover:border-violet-300 hover:bg-violet-50 dark:hover:bg-gray-700 transition-all duration-200 group">
+          <div className="w-14 h-14 rounded-xl bg-gray-100 dark:bg-gray-700 group-hover:bg-violet-100 dark:group-hover:bg-violet-900/40 flex items-center justify-center shrink-0 transition-colors">
             <svg className="w-6 h-6 text-gray-400 group-hover:text-violet-500 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
             </svg>

@@ -58,7 +58,7 @@ const EditVideo = () => {
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M15 10l4.553-2.069A1 1 0 0121 8.87v6.26a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z" />
           </svg>
         </div>
-        <h2 className="text-xl font-bold text-gray-800 mb-2">Sign in to edit videos</h2>
+        <h2 className="text-xl font-bold text-gray-800 dark:text-gray-100 mb-2">Sign in to edit videos</h2>
         <p className="text-gray-500 text-sm mb-6 max-w-xs">You need to be signed in to edit your videos.</p>
         <Link
           to="/login"
@@ -88,7 +88,7 @@ const EditVideo = () => {
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M12 9v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
           </svg>
         </div>
-        <p className="text-gray-700 font-medium mb-2">{fetchError}</p>
+        <p className="text-gray-700 dark:text-gray-300 font-medium mb-2">{fetchError}</p>
         <button
           onClick={() => navigate(-1)}
           className="text-sm text-violet-600 hover:underline"
@@ -156,7 +156,7 @@ const EditVideo = () => {
   return (
     <div>
       {/* Header Banner */}
-      <div className="relative rounded-2xl overflow-hidden mb-8 p-7 bg-gradient-to-r from-indigo-100 via-violet-50 to-purple-100 border border-purple-100/80">
+      <div className="relative rounded-2xl overflow-hidden mb-8 p-7 bg-gradient-to-r from-indigo-100 via-violet-50 to-purple-100 dark:from-indigo-900/40 dark:via-violet-900/30 dark:to-purple-900/40 border border-purple-100/80 dark:border-purple-800/40">
         <div className="absolute -top-8 -right-8 w-52 h-52 rounded-full bg-indigo-200/50 blur-3xl pointer-events-none" />
         <div className="absolute -bottom-6 left-6 w-36 h-36 rounded-full bg-violet-200/40 blur-2xl pointer-events-none" />
         <div className="relative flex items-center gap-4">
@@ -164,12 +164,12 @@ const EditVideo = () => {
             onClick={() => navigate(`/video/${videoId}`)}
             className="w-9 h-9 rounded-full bg-white/70 flex items-center justify-center hover:bg-white transition-colors shadow-sm"
           >
-            <svg className="w-4 h-4 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <svg className="w-4 h-4 text-gray-600 dark:text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
             </svg>
           </button>
           <div>
-            <h1 className="text-2xl font-bold text-gray-800">Edit Video</h1>
+            <h1 className="text-2xl font-bold text-gray-800 dark:text-gray-100">Edit Video</h1>
             <p className="text-gray-500 mt-0.5 text-sm">Update your video details</p>
           </div>
         </div>
@@ -178,8 +178,8 @@ const EditVideo = () => {
       <form onSubmit={handleSubmit} className="space-y-6 max-w-3xl">
 
         {/* Details Card */}
-        <div className="bg-white rounded-2xl border border-gray-100 shadow-sm p-6 space-y-5">
-          <h2 className="text-sm font-semibold text-gray-700 flex items-center gap-2">
+        <div className="bg-white dark:bg-gray-800 rounded-2xl border border-gray-100 dark:border-gray-700 shadow-sm p-6 space-y-5">
+          <h2 className="text-sm font-semibold text-gray-700 dark:text-gray-300 flex items-center gap-2">
             <div className="w-1 h-4 rounded-full bg-gradient-to-b from-violet-500 to-purple-600" />
             Video Details
           </h2>
@@ -196,7 +196,7 @@ const EditVideo = () => {
               placeholder="Give your video a title"
               maxLength={100}
               disabled={saving}
-              className="w-full px-4 py-2.5 rounded-xl border border-gray-200 text-sm text-gray-800 placeholder-gray-400 focus:outline-none focus:border-violet-400 focus:ring-2 focus:ring-violet-100 transition-all disabled:opacity-60"
+              className="w-full px-4 py-2.5 rounded-xl border border-gray-200 dark:border-gray-600 bg-white dark:bg-gray-700 text-sm text-gray-800 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:border-violet-400 focus:ring-2 focus:ring-violet-100 dark:focus:ring-violet-900/40 transition-all disabled:opacity-60"
             />
             <p className="text-right text-xs text-gray-400 mt-1">{title.length}/100</p>
           </div>
@@ -213,7 +213,7 @@ const EditVideo = () => {
               maxLength={5000}
               rows={5}
               disabled={saving}
-              className="w-full px-4 py-2.5 rounded-xl border border-gray-200 text-sm text-gray-800 placeholder-gray-400 focus:outline-none focus:border-violet-400 focus:ring-2 focus:ring-violet-100 transition-all resize-none disabled:opacity-60"
+              className="w-full px-4 py-2.5 rounded-xl border border-gray-200 dark:border-gray-600 bg-white dark:bg-gray-700 text-sm text-gray-800 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:border-violet-400 focus:ring-2 focus:ring-violet-100 dark:focus:ring-violet-900/40 transition-all resize-none disabled:opacity-60"
             />
             <p className="text-right text-xs text-gray-400 mt-1">{description.length}/5000</p>
           </div>
@@ -297,14 +297,14 @@ const EditVideo = () => {
         </div>
 
         {/* Visibility Card */}
-        <div className="bg-white rounded-2xl border border-gray-100 shadow-sm p-6">
-          <h2 className="text-sm font-semibold text-gray-700 flex items-center gap-2 mb-4">
+        <div className="bg-white dark:bg-gray-800 rounded-2xl border border-gray-100 dark:border-gray-700 shadow-sm p-6">
+          <h2 className="text-sm font-semibold text-gray-700 dark:text-gray-300 flex items-center gap-2 mb-4">
             <div className="w-1 h-4 rounded-full bg-gradient-to-b from-teal-500 to-emerald-500" />
             Visibility
           </h2>
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-sm font-medium text-gray-700">
+              <p className="text-sm font-medium text-gray-700 dark:text-gray-300">
                 {isPublished ? 'Published' : 'Private'}
               </p>
               <p className="text-xs text-gray-400 mt-0.5">
@@ -352,11 +352,11 @@ const EditVideo = () => {
 
         {/* Save Progress */}
         {saving && !success && (
-          <div className="bg-white rounded-2xl border border-gray-100 shadow-sm p-5">
+          <div className="bg-white dark:bg-gray-800 rounded-2xl border border-gray-100 dark:border-gray-700 shadow-sm p-5">
             <div className="flex items-center justify-between mb-3">
               <div className="flex items-center gap-2">
                 <div className="w-4 h-4 border-2 border-violet-500 border-t-transparent rounded-full animate-spin" />
-                <p className="text-sm font-medium text-gray-700">Saving changes…</p>
+                <p className="text-sm font-medium text-gray-700 dark:text-gray-300">Saving changes…</p>
               </div>
               {thumbnailFile && (
                 <span className="text-sm font-semibold text-violet-600">{progress}%</span>
@@ -398,7 +398,7 @@ const EditVideo = () => {
             type="button"
             onClick={() => navigate(`/video/${videoId}`)}
             disabled={saving}
-            className="px-6 py-3 rounded-full border border-gray-200 text-sm font-medium text-gray-600 hover:bg-gray-50 transition-colors disabled:opacity-50"
+            className="px-6 py-3 rounded-full border border-gray-200 dark:border-gray-600 text-sm font-medium text-gray-600 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors disabled:opacity-50"
           >
             Cancel
           </button>

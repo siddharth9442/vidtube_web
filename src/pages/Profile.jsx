@@ -91,7 +91,7 @@ const Profile = () => {
           )}
         </div>
         <div className="flex-1 min-w-0 pb-1">
-          <h1 className="text-2xl font-bold text-gray-900">{channel.fullName}</h1>
+          <h1 className="text-2xl font-bold text-gray-900 dark:text-white">{channel.fullName}</h1>
           <p className="text-sm text-gray-500 mt-0.5">
             @{channel.username} &nbsp;·&nbsp; {formatSubs(channel.subscribersCount)} subscribers &nbsp;·&nbsp; {channel.totalVideos} videos
           </p>
@@ -100,8 +100,8 @@ const Profile = () => {
           onClick={() => setSubscribed((s) => !s)}
           className={`px-6 py-2.5 rounded-full font-semibold text-sm transition-colors ${
             subscribed
-              ? 'bg-gray-200 text-gray-700 hover:bg-gray-300'
-              : 'bg-gray-900 text-white hover:bg-gray-700'
+              ? 'bg-gray-200 text-gray-700 hover:bg-gray-300 dark:bg-gray-600 dark:text-gray-200 dark:hover:bg-gray-500'
+              : 'bg-gray-900 text-white hover:bg-gray-700 dark:bg-gray-100 dark:text-gray-900 dark:hover:bg-white'
           }`}
         >
           {subscribed ? 'Subscribed' : 'Subscribe'}
@@ -109,15 +109,15 @@ const Profile = () => {
       </div>
 
       {/* Tabs */}
-      <div className="flex gap-6 border-b border-gray-200 mt-6">
+      <div className="flex gap-6 border-b border-gray-200 dark:border-gray-700 mt-6">
         {TABS.map((tab) => (
           <button
             key={tab}
             onClick={() => setActiveTab(tab)}
             className={`pb-3 text-sm font-semibold transition-colors border-b-2 -mb-px ${
               activeTab === tab
-                ? 'border-gray-900 text-gray-900'
-                : 'border-transparent text-gray-500 hover:text-gray-900'
+                ? 'border-gray-900 text-gray-900 dark:border-white dark:text-white'
+                : 'border-transparent text-gray-500 hover:text-gray-900 dark:hover:text-white'
             }`}
           >
             {tab}
@@ -138,14 +138,14 @@ const Profile = () => {
         {activeTab === 'About' && (
           <div className="max-w-lg space-y-4">
             <div>
-              <h3 className="font-semibold text-gray-900 mb-1">Description</h3>
-              <p className="text-gray-600 text-sm">{channel.bio}</p>
+              <h3 className="font-semibold text-gray-900 dark:text-white mb-1">Description</h3>
+              <p className="text-gray-600 dark:text-gray-400 text-sm">{channel.bio}</p>
             </div>
             <div>
-              <h3 className="font-semibold text-gray-900 mb-1">Stats</h3>
-              <p className="text-gray-600 text-sm">Joined {new Date(channel.createdAt).toLocaleDateString('en-US', { year: 'numeric', month: 'long' })}</p>
-              <p className="text-gray-600 text-sm">{formatSubs(channel.subscribersCount)} subscribers</p>
-              <p className="text-gray-600 text-sm">{channel.totalVideos} videos</p>
+              <h3 className="font-semibold text-gray-900 dark:text-white mb-1">Stats</h3>
+              <p className="text-gray-600 dark:text-gray-400 text-sm">Joined {new Date(channel.createdAt).toLocaleDateString('en-US', { year: 'numeric', month: 'long' })}</p>
+              <p className="text-gray-600 dark:text-gray-400 text-sm">{formatSubs(channel.subscribersCount)} subscribers</p>
+              <p className="text-gray-600 dark:text-gray-400 text-sm">{channel.totalVideos} videos</p>
             </div>
           </div>
         )}

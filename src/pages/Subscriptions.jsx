@@ -78,7 +78,7 @@ const Subscriptions = () => {
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M15 10l4.553-2.069A1 1 0 0121 8.845v6.31a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z" />
           </svg>
         </div>
-        <h2 className="text-xl font-bold text-gray-800 mb-2">Sign in to see subscriptions</h2>
+        <h2 className="text-xl font-bold text-gray-800 dark:text-gray-100 mb-2">Sign in to see subscriptions</h2>
         <p className="text-gray-500 text-sm mb-6 max-w-xs">
           Videos from channels you subscribe to will appear here.
         </p>
@@ -95,13 +95,13 @@ const Subscriptions = () => {
   return (
     <div>
       {/* Hero Banner */}
-      <div className="relative rounded-2xl overflow-hidden mb-8 p-7 bg-gradient-to-r from-teal-100 via-cyan-50 to-sky-100 border border-cyan-100/80">
+      <div className="relative rounded-2xl overflow-hidden mb-8 p-7 bg-gradient-to-r from-teal-100 via-cyan-50 to-sky-100 dark:from-teal-900/40 dark:via-cyan-900/30 dark:to-sky-900/40 border border-cyan-100/80 dark:border-cyan-800/40">
         <div className="absolute -top-8 -right-8 w-52 h-52 rounded-full bg-teal-200/50 blur-3xl pointer-events-none" />
         <div className="absolute -bottom-6 left-6 w-36 h-36 rounded-full bg-sky-200/40 blur-2xl pointer-events-none" />
 
         <div className="relative flex items-center justify-between flex-wrap gap-4">
           <div>
-            <h1 className="text-2xl font-bold text-gray-800 flex items-center gap-2">
+            <h1 className="text-2xl font-bold text-gray-800 dark:text-gray-100 flex items-center gap-2">
               Subscriptions
               <span className="text-2xl">📺</span>
             </h1>
@@ -129,7 +129,7 @@ const Subscriptions = () => {
       <div className="mb-7">
         <div className="flex items-center gap-3 mb-4">
           <div className="w-1 h-5 rounded-full bg-gradient-to-b from-teal-500 to-cyan-500" />
-          <h2 className="text-base font-semibold text-gray-600">Channels</h2>
+          <h2 className="text-base font-semibold text-gray-600 dark:text-gray-400">Channels</h2>
         </div>
         <div className="flex gap-4 overflow-x-auto pb-2">
           {MOCK_CHANNELS.map((channel) => (
@@ -143,7 +143,7 @@ const Subscriptions = () => {
               >
                 {channel.username[0].toUpperCase()}
               </div>
-              <span className="text-xs text-gray-500 font-medium text-center w-16 truncate group-hover:text-gray-800 transition-colors">
+              <span className="text-xs text-gray-500 dark:text-gray-400 font-medium text-center w-16 truncate group-hover:text-gray-800 dark:group-hover:text-gray-200 transition-colors">
                 {channel.username}
               </span>
               <span className="text-[10px] text-gray-400">{channel.videos} videos</span>
@@ -155,7 +155,7 @@ const Subscriptions = () => {
       {/* Section Heading */}
       <div className="flex items-center gap-3 mb-5">
         <div className="w-1 h-5 rounded-full bg-gradient-to-b from-teal-500 to-cyan-500" />
-        <h2 className="text-base font-semibold text-gray-600">Latest uploads</h2>
+        <h2 className="text-base font-semibold text-gray-600 dark:text-gray-400">Latest uploads</h2>
       </div>
 
       {/* Video Grid */}

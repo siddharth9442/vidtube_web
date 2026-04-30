@@ -29,7 +29,7 @@ const Upload = () => {
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M15 10l4.553-2.069A1 1 0 0121 8.87v6.26a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z" />
           </svg>
         </div>
-        <h2 className="text-xl font-bold text-gray-800 mb-2">Sign in to upload videos</h2>
+        <h2 className="text-xl font-bold text-gray-800 dark:text-gray-100 mb-2">Sign in to upload videos</h2>
         <p className="text-gray-500 text-sm mb-6 max-w-xs">
           You need to be signed in to upload and publish videos.
         </p>
@@ -125,11 +125,11 @@ const Upload = () => {
   return (
     <div>
       {/* Header Banner */}
-      <div className="relative rounded-2xl overflow-hidden mb-8 p-7 bg-gradient-to-r from-violet-100 via-purple-50 to-indigo-100 border border-purple-100/80">
+      <div className="relative rounded-2xl overflow-hidden mb-8 p-7 bg-gradient-to-r from-violet-100 via-purple-50 to-indigo-100 dark:from-violet-900/40 dark:via-purple-900/30 dark:to-indigo-900/40 border border-purple-100/80 dark:border-purple-800/40">
         <div className="absolute -top-8 -right-8 w-52 h-52 rounded-full bg-violet-200/50 blur-3xl pointer-events-none" />
         <div className="absolute -bottom-6 left-6 w-36 h-36 rounded-full bg-indigo-200/40 blur-2xl pointer-events-none" />
         <div className="relative">
-          <h1 className="text-2xl font-bold text-gray-800">Upload Video</h1>
+          <h1 className="text-2xl font-bold text-gray-800 dark:text-gray-100">Upload Video</h1>
           <p className="text-gray-500 mt-1 text-sm">Share your content with the world</p>
         </div>
       </div>
@@ -144,10 +144,10 @@ const Upload = () => {
           onClick={() => !videoFile && videoInputRef.current?.click()}
           className={`relative rounded-2xl border-2 border-dashed transition-all duration-200 ${
             videoFile
-              ? 'border-violet-300 bg-violet-50/50 cursor-default'
+              ? 'border-violet-300 bg-violet-50/50 dark:bg-violet-900/20 cursor-default'
               : videoDragging
-              ? 'border-violet-400 bg-violet-50 scale-[1.01] cursor-copy'
-              : 'border-gray-200 bg-white hover:border-violet-300 hover:bg-violet-50/30 cursor-pointer'
+              ? 'border-violet-400 bg-violet-50 dark:bg-violet-900/30 scale-[1.01] cursor-copy'
+              : 'border-gray-200 dark:border-gray-600 bg-white dark:bg-gray-800 hover:border-violet-300 hover:bg-violet-50/30 dark:hover:bg-gray-700 cursor-pointer'
           }`}
         >
           <input
@@ -166,7 +166,7 @@ const Upload = () => {
                 </svg>
               </div>
               <div className="flex-1 min-w-0">
-                <p className="text-sm font-semibold text-gray-800 truncate">{videoFile.name}</p>
+                <p className="text-sm font-semibold text-gray-800 dark:text-gray-100 truncate">{videoFile.name}</p>
                 <p className="text-xs text-gray-400 mt-0.5">{formatFileSize(videoFile.size)}</p>
               </div>
               <button
@@ -186,7 +186,7 @@ const Upload = () => {
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
                 </svg>
               </div>
-              <p className="text-base font-semibold text-gray-700 mb-1">
+              <p className="text-base font-semibold text-gray-700 dark:text-gray-300 mb-1">
                 {videoDragging ? 'Drop your video here' : 'Drag & drop your video'}
               </p>
               <p className="text-sm text-gray-400 mb-4">or click to browse files</p>
@@ -203,8 +203,8 @@ const Upload = () => {
         </div>
 
         {/* Details Card */}
-        <div className="bg-white rounded-2xl border border-gray-100 shadow-sm p-6 space-y-5">
-          <h2 className="text-sm font-semibold text-gray-700 flex items-center gap-2">
+        <div className="bg-white dark:bg-gray-800 rounded-2xl border border-gray-100 dark:border-gray-700 shadow-sm p-6 space-y-5">
+          <h2 className="text-sm font-semibold text-gray-700 dark:text-gray-300 flex items-center gap-2">
             <div className="w-1 h-4 rounded-full bg-gradient-to-b from-violet-500 to-purple-600" />
             Video Details
           </h2>
@@ -220,7 +220,7 @@ const Upload = () => {
               onChange={(e) => setTitle(e.target.value)}
               placeholder="Give your video a title"
               maxLength={100}
-              className="w-full px-4 py-2.5 rounded-xl border border-gray-200 text-sm text-gray-800 placeholder-gray-400 focus:outline-none focus:border-violet-400 focus:ring-2 focus:ring-violet-100 transition-all"
+              className="w-full px-4 py-2.5 rounded-xl border border-gray-200 dark:border-gray-600 bg-white dark:bg-gray-700 text-sm text-gray-800 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:border-violet-400 focus:ring-2 focus:ring-violet-100 dark:focus:ring-violet-900/40 transition-all"
             />
             <p className="text-right text-xs text-gray-400 mt-1">{title.length}/100</p>
           </div>
@@ -236,7 +236,7 @@ const Upload = () => {
               placeholder="Tell viewers about your video"
               maxLength={5000}
               rows={4}
-              className="w-full px-4 py-2.5 rounded-xl border border-gray-200 text-sm text-gray-800 placeholder-gray-400 focus:outline-none focus:border-violet-400 focus:ring-2 focus:ring-violet-100 transition-all resize-none"
+              className="w-full px-4 py-2.5 rounded-xl border border-gray-200 dark:border-gray-600 bg-white dark:bg-gray-700 text-sm text-gray-800 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:border-violet-400 focus:ring-2 focus:ring-violet-100 dark:focus:ring-violet-900/40 transition-all resize-none"
             />
             <p className="text-right text-xs text-gray-400 mt-1">{description.length}/5000</p>
           </div>
@@ -312,15 +312,15 @@ const Upload = () => {
 
         {/* Upload Progress */}
         {uploading && (
-          <div className="bg-white rounded-2xl border border-gray-100 shadow-sm p-5">
+          <div className="bg-white dark:bg-gray-800 rounded-2xl border border-gray-100 dark:border-gray-700 shadow-sm p-5">
             <div className="flex items-center justify-between mb-3">
               <div className="flex items-center gap-2">
                 <div className="w-4 h-4 border-2 border-violet-500 border-t-transparent rounded-full animate-spin" />
-                <p className="text-sm font-medium text-gray-700">Uploading video…</p>
+                <p className="text-sm font-medium text-gray-700 dark:text-gray-300">Uploading video…</p>
               </div>
               <span className="text-sm font-semibold text-violet-600">{progress}%</span>
             </div>
-            <div className="w-full h-2 bg-gray-100 rounded-full overflow-hidden">
+            <div className="w-full h-2 bg-gray-100 dark:bg-gray-700 rounded-full overflow-hidden">
               <div
                 className="h-full bg-gradient-to-r from-violet-500 to-purple-600 rounded-full transition-all duration-300"
                 style={{ width: `${progress}%` }}
@@ -348,7 +348,7 @@ const Upload = () => {
             type="button"
             onClick={() => navigate(-1)}
             disabled={uploading}
-            className="px-6 py-3 rounded-full border border-gray-200 text-sm font-medium text-gray-600 hover:bg-gray-50 transition-colors disabled:opacity-50"
+            className="px-6 py-3 rounded-full border border-gray-200 dark:border-gray-600 text-sm font-medium text-gray-600 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors disabled:opacity-50"
           >
             Cancel
           </button>

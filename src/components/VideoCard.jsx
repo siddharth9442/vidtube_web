@@ -37,7 +37,7 @@ const VideoCard = ({ video }) => {
   const gradient = getGradient(_id)
 
   return (
-    <div className="group bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300 border border-gray-100/80">
+    <div className="group bg-white dark:bg-gray-800 rounded-2xl overflow-hidden shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300 border border-gray-100/80 dark:border-gray-700">
       {/* Thumbnail */}
       <Link to={`/video/${_id}`} className="block">
         <div className="relative aspect-video overflow-hidden">
@@ -75,7 +75,7 @@ const VideoCard = ({ video }) => {
 
         <div className="min-w-0">
           <Link to={`/video/${_id}`} className="block">
-            <h3 className="font-semibold text-sm line-clamp-2 leading-snug text-gray-800 group-hover:text-violet-600 transition-colors duration-200">
+            <h3 className="font-semibold text-sm line-clamp-2 leading-snug text-gray-800 dark:text-gray-100 group-hover:text-violet-600 dark:group-hover:text-violet-400 transition-colors duration-200">
               {title}
             </h3>
           </Link>

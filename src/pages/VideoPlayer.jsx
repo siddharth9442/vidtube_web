@@ -84,10 +84,10 @@ const VideoPlayer = () => {
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
           </svg>
         </div>
-        <p className="text-gray-700 font-medium text-sm">{error || 'Video not found.'}</p>
+        <p className="text-gray-700 dark:text-gray-300 font-medium text-sm">{error || 'Video not found.'}</p>
         <Link
           to="/"
-          className="mt-4 px-5 py-2 rounded-full border border-gray-200 text-sm text-gray-600 hover:bg-gray-50 transition-colors"
+          className="mt-4 px-5 py-2 rounded-full border border-gray-200 dark:border-gray-600 text-sm text-gray-600 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors"
         >
           Go home
         </Link>
@@ -115,7 +115,7 @@ const VideoPlayer = () => {
         </div>
 
         {/* Title */}
-        <h1 className="text-xl font-bold mt-4 text-gray-900">{video.title}</h1>
+        <h1 className="text-xl font-bold mt-4 text-gray-900 dark:text-white">{video.title}</h1>
 
         {/* Channel info + actions */}
         <div className="flex items-center justify-between mt-4 flex-wrap gap-4">
@@ -129,7 +129,7 @@ const VideoPlayer = () => {
             <div>
               <Link
                 to={`/channel/${owner._id}`}
-                className="font-semibold text-gray-900 hover:text-blue-600 transition-colors"
+                className="font-semibold text-gray-900 dark:text-white hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
               >
                 {owner.username}
               </Link>
@@ -143,8 +143,8 @@ const VideoPlayer = () => {
               onClick={() => setSubscribed((s) => !s)}
               className={`ml-3 px-5 py-2 rounded-full text-sm font-semibold transition-colors ${
                 subscribed
-                  ? 'bg-gray-200 text-gray-700 hover:bg-gray-300'
-                  : 'bg-gray-900 text-white hover:bg-gray-700'
+                  ? 'bg-gray-200 text-gray-700 hover:bg-gray-300 dark:bg-gray-600 dark:text-gray-200 dark:hover:bg-gray-500'
+                  : 'bg-gray-900 text-white hover:bg-gray-700 dark:bg-gray-100 dark:text-gray-900 dark:hover:bg-white'
               }`}
             >
               {subscribed ? 'Subscribed' : 'Subscribe'}
@@ -155,7 +155,7 @@ const VideoPlayer = () => {
             <button
               onClick={() => setLiked((l) => !l)}
               className={`flex items-center gap-2 px-4 py-2 rounded-full text-sm font-medium transition-colors ${
-                liked ? 'bg-blue-100 text-blue-600' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                liked ? 'bg-blue-100 text-blue-600 dark:bg-blue-900 dark:text-blue-300' : 'bg-gray-100 text-gray-700 hover:bg-gray-200 dark:bg-gray-700 dark:text-gray-300 dark:hover:bg-gray-600'
               }`}
             >
               <svg className="w-4 h-4" fill={liked ? 'currentColor' : 'none'} stroke="currentColor" viewBox="0 0 24 24">
@@ -163,7 +163,7 @@ const VideoPlayer = () => {
               </svg>
               {formatViews((video.likes ?? 0) + (liked ? 1 : 0))}
             </button>
-            <button className="flex items-center gap-2 px-4 py-2 rounded-full text-sm font-medium bg-gray-100 text-gray-700 hover:bg-gray-200 transition-colors">
+            <button className="flex items-center gap-2 px-4 py-2 rounded-full text-sm font-medium bg-gray-100 text-gray-700 hover:bg-gray-200 dark:bg-gray-700 dark:text-gray-300 dark:hover:bg-gray-600 transition-colors">
               <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z" />
               </svg>
@@ -173,18 +173,18 @@ const VideoPlayer = () => {
         </div>
 
         {/* Description */}
-        <div className="mt-4 bg-gray-100 rounded-xl p-4 text-sm">
-          <p className="font-medium text-gray-900">
+        <div className="mt-4 bg-gray-100 dark:bg-gray-800 rounded-xl p-4 text-sm">
+          <p className="font-medium text-gray-900 dark:text-gray-100">
             {formatViews(video.views)} views &nbsp;·&nbsp;{' '}
             {new Date(video.createdAt).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}
           </p>
-          <p className={`mt-2 text-gray-700 whitespace-pre-line ${descExpanded ? '' : 'line-clamp-3'}`}>
+          <p className={`mt-2 text-gray-700 dark:text-gray-300 whitespace-pre-line ${descExpanded ? '' : 'line-clamp-3'}`}>
             {video.description}
           </p>
           {video.description?.length > 150 && (
             <button
               onClick={() => setDescExpanded((e) => !e)}
-              className="mt-2 text-xs font-semibold text-gray-900 hover:text-blue-600 transition-colors"
+              className="mt-2 text-xs font-semibold text-gray-900 dark:text-gray-100 hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
             >
               {descExpanded ? 'Show less' : 'Show more'}
             </button>
@@ -195,7 +195,7 @@ const VideoPlayer = () => {
       {/* Sidebar — Related Videos */}
       {relatedVideos.length > 0 && (
         <div className="w-96 shrink-0 hidden lg:block">
-          <h2 className="font-semibold text-gray-900 mb-4">Related Videos</h2>
+          <h2 className="font-semibold text-gray-900 dark:text-white mb-4">Related Videos</h2>
           <div className="flex flex-col gap-4">
             {relatedVideos.map((v) => (
               <VideoCard key={v._id} video={v} />

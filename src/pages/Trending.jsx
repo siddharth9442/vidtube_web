@@ -90,13 +90,13 @@ const Trending = () => {
   return (
     <div>
       {/* Hero Banner */}
-      <div className="relative rounded-2xl overflow-hidden mb-8 p-7 bg-gradient-to-r from-orange-100 via-rose-50 to-pink-100 border border-rose-100/80">
+      <div className="relative rounded-2xl overflow-hidden mb-8 p-7 bg-gradient-to-r from-orange-100 via-rose-50 to-pink-100 dark:from-orange-900/40 dark:via-rose-900/30 dark:to-pink-900/40 border border-rose-100/80 dark:border-rose-800/40">
         <div className="absolute -top-8 -right-8 w-52 h-52 rounded-full bg-orange-200/50 blur-3xl pointer-events-none" />
         <div className="absolute -bottom-6 left-6 w-36 h-36 rounded-full bg-rose-200/40 blur-2xl pointer-events-none" />
 
         <div className="relative flex items-center justify-between flex-wrap gap-4">
           <div>
-            <h1 className="text-2xl font-bold text-gray-800 flex items-center gap-2">
+            <h1 className="text-2xl font-bold text-gray-800 dark:text-gray-100 flex items-center gap-2">
               Trending Now
               <span className="text-2xl">🔥</span>
             </h1>
@@ -129,7 +129,7 @@ const Trending = () => {
             className={`shrink-0 px-4 py-1.5 rounded-full text-sm font-medium transition-all duration-200 ${
               activeFilter === filter
                 ? 'bg-gradient-to-r from-orange-500 to-rose-500 text-white shadow-md shadow-orange-200/60'
-                : 'bg-white text-gray-600 border border-gray-200 hover:border-orange-300 hover:text-orange-600 hover:bg-orange-50'
+                : 'bg-white dark:bg-gray-700 text-gray-600 dark:text-gray-300 border border-gray-200 dark:border-gray-600 hover:border-orange-300 hover:text-orange-600 hover:bg-orange-50 dark:hover:bg-gray-600 dark:hover:text-orange-400'
             }`}
           >
             {filter}
@@ -140,7 +140,7 @@ const Trending = () => {
       {/* Section Heading */}
       <div className="flex items-center gap-3 mt-7 mb-5">
         <div className="w-1 h-5 rounded-full bg-gradient-to-b from-orange-500 to-rose-500" />
-        <h2 className="text-base font-semibold text-gray-600">Top Videos</h2>
+        <h2 className="text-base font-semibold text-gray-600 dark:text-gray-400">Top Videos</h2>
       </div>
 
       {/* Ranked Video Grid */}
@@ -149,7 +149,7 @@ const Trending = () => {
           <div key={video._id} className="relative">
             {/* Rank badge */}
             <div
-              className={`absolute -top-2 -left-2 z-10 w-8 h-8 rounded-full bg-white border-2 flex items-center justify-center text-sm font-black shadow-md ${
+              className={`absolute -top-2 -left-2 z-10 w-8 h-8 rounded-full bg-white dark:bg-gray-800 border-2 flex items-center justify-center text-sm font-black shadow-md ${
                 RANK_STYLES[index] ?? 'text-gray-300'
               } border-current`}
             >

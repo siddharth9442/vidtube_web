@@ -16,7 +16,7 @@ const CATEGORIES = [
 ]
 
 const VideoCardSkeleton = () => (
-  <div className="bg-white rounded-2xl overflow-hidden border border-gray-100/80 animate-pulse">
+  <div className="bg-white dark:bg-gray-800 rounded-2xl overflow-hidden border border-gray-100/80 dark:border-gray-700 animate-pulse">
     <div className="aspect-video bg-gray-100" />
     <div className="flex gap-3 p-3">
       <div className="w-9 h-9 rounded-full bg-gray-100 shrink-0" />
@@ -63,14 +63,14 @@ const Home = () => {
   return (
     <div>
       {/* Hero Banner */}
-      <div className="relative rounded-2xl overflow-hidden mb-8 p-7 bg-gradient-to-r from-violet-100 via-purple-50 to-indigo-100 border border-purple-100/80">
+      <div className="relative rounded-2xl overflow-hidden mb-8 p-7 bg-gradient-to-r from-violet-100 via-purple-50 to-indigo-100 dark:from-violet-900/40 dark:via-purple-900/30 dark:to-indigo-900/40 border border-purple-100/80 dark:border-purple-800/40">
         {/* Decorative blobs */}
         <div className="absolute -top-8 -right-8 w-52 h-52 rounded-full bg-purple-200/50 blur-3xl pointer-events-none" />
         <div className="absolute -bottom-6 left-6 w-36 h-36 rounded-full bg-indigo-200/40 blur-2xl pointer-events-none" />
 
         <div className="relative flex items-center justify-between flex-wrap gap-4">
           <div>
-            <h1 className="text-2xl font-bold text-gray-800">
+            <h1 className="text-2xl font-bold text-gray-800 dark:text-gray-100">
               Explore &amp; Discover ✨
             </h1>
             <p className="text-gray-500 mt-1 text-sm">
@@ -102,7 +102,7 @@ const Home = () => {
             className={`shrink-0 flex items-center gap-1.5 px-4 py-1.5 rounded-full text-sm font-medium transition-all duration-200 ${
               activeCategory === label
                 ? 'bg-gradient-to-r from-violet-500 to-purple-600 text-white shadow-md shadow-purple-200/60'
-                : 'bg-white text-gray-600 border border-gray-200 hover:border-purple-300 hover:text-purple-600 hover:bg-purple-50'
+                : 'bg-white dark:bg-gray-700 text-gray-600 dark:text-gray-300 border border-gray-200 dark:border-gray-600 hover:border-purple-300 hover:text-purple-600 hover:bg-purple-50 dark:hover:bg-gray-600 dark:hover:text-purple-300'
             }`}
           >
             {emoji && <span>{emoji}</span>}
@@ -114,7 +114,7 @@ const Home = () => {
       {/* Section heading */}
       <div className="flex items-center gap-3 mt-7 mb-5">
         <div className="w-1 h-5 rounded-full bg-gradient-to-b from-violet-500 to-purple-600" />
-        <h2 className="text-base font-semibold text-gray-600">Recommended for you</h2>
+        <h2 className="text-base font-semibold text-gray-600 dark:text-gray-400">Recommended for you</h2>
       </div>
 
       {/* Error state */}
@@ -125,10 +125,10 @@ const Home = () => {
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
             </svg>
           </div>
-          <p className="text-gray-700 font-medium text-sm">{error}</p>
+          <p className="text-gray-700 dark:text-gray-300 font-medium text-sm">{error}</p>
           <button
             onClick={() => window.location.reload()}
-            className="mt-4 px-5 py-2 rounded-full border border-gray-200 text-sm text-gray-600 hover:bg-gray-50 transition-colors"
+            className="mt-4 px-5 py-2 rounded-full border border-gray-200 dark:border-gray-600 text-sm text-gray-600 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors"
           >
             Try again
           </button>
@@ -153,7 +153,7 @@ const Home = () => {
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M15 10l4.553-2.069A1 1 0 0121 8.87v6.26a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z" />
             </svg>
           </div>
-          <h2 className="text-lg font-bold text-gray-800 mb-1">No videos yet</h2>
+          <h2 className="text-lg font-bold text-gray-800 dark:text-gray-100 mb-1">No videos yet</h2>
           <p className="text-gray-400 text-sm">Be the first to upload a video!</p>
         </div>
       )}
